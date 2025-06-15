@@ -80,7 +80,6 @@ if st.button("🎲 Generate Quiz"):
 
 # --- Display Questions ---
 if "questions" in st.session_state:
-    st.subheader("📝 Quiz: Chapter 1")
     for i, q in enumerate(st.session_state.questions):
         formatted_q = format_question(q)
         st.markdown(formatted_q, unsafe_allow_html=True)
