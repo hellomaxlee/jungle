@@ -70,7 +70,6 @@ def format_question(text):
 
 # --- Streamlit App UI ---
 st.title("📘 The Jungle – Chapter 1 Quiz")
-st.write("All questions are based **only on Chapter 1** of *The Jungle* by Upton Sinclair. You'll be tested on specific people, customs, and moments — good luck!")
 
 if st.button("🎲 Generate Quiz"):
     st.session_state.chapter = 1
@@ -102,4 +101,4 @@ if "questions" in st.session_state:
             else:
                 st.error(f"❌ Q{i+1} is incorrect. Correct answer: {correct}")
 
-        st.markdown(f"### Total Score: **{score}")
+        st.markdown(f"### Total Score: **{score}**")
