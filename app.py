@@ -13,6 +13,7 @@ You are a literary expert creating a detailed and challenging quiz based **only*
 Generate 4 multiple-choice questions. Each must:
 - Be highly specific to the Introduction (not the rest of the book)
 - Reference specific details
+- Be extremely challenging or tricky
 - Include 4 answer choices labeled A–D
 - Identify the correct answer using "Answer: X"
 - Follow with a 3–4 sentence explanation for the correct answer
