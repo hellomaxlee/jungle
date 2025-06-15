@@ -32,7 +32,7 @@ Answer: X
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
-            max_tokens=900
+            max_tokens=1000
         )
         return response.choices[0].message.content.strip()
     except Exception as e:
@@ -58,6 +58,15 @@ def parse_quiz(raw_text):
 
     return questions, answers
 
+# --- Pretty formatter for questions ---
+def format_question(text):
+    text = re.sub(r"(Q\d+:)", r"**\1**", text)
+    text = re.sub(r"\nA\.", r"\n- **A.**", text)
+    text = re.sub(r"\nB\.", r"\n- **B.**", text)
+    text = re.sub(r"\nC\.", r"\n- **C.**", text)
+    text = re.sub(r"\nD\.", r"\n- **D.**", text)
+    return text
+
 # --- Streamlit App UI ---
 st.title("📘 The Jungle Quiz Challenge")
 st.write("Test your knowledge of *The Jungle* by Upton Sinclair with 4 extremely challenging questions from a random chapter.")
@@ -74,7 +83,8 @@ if st.button("🎲 Generate Random Quiz"):
 if "questions" in st.session_state:
     st.subheader(f"📖 Chapter {st.session_state.chapter}")
     for i, q in enumerate(st.session_state.questions):
-        st.markdown(f"**Q{i+1}**:\n\n{q}", unsafe_allow_html=False)
+        formatted_q = format_question(q)
+        st.markdown(formatted_q, unsafe_allow_html=True)
 
     # --- Capture User Answers ---
     user_answers = []
@@ -84,9 +94,14 @@ if "questions" in st.session_state:
 
     # --- Check User Answers ---
     if st.button("✅ Check My Answers"):
-        for i, (user, correct) in enumerate(zip(user_answers, st.session_state.answers)):
-            if user == correct:
+        correct = 0
+        for i, (user, actual) in enumerate(zip(user_answers, st.session_state.answers)):
+            if user == actual:
                 st.success(f"✅ Q{i+1} is correct!")
+                correct += 1
             else:
-                st.error(f"❌ Q{i+1} is incorrect. Correct answer: {correct}")
+                st.error(f"❌ Q{i+1} is incorrect. Correct answer: {actual}")
+
+        st.markdown(f"### 🏁 Total Score: **{correct} / 4 Points**")
+
 
