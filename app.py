@@ -9,13 +9,14 @@ client = OpenAI(api_key=st.secrets["openai"]["api_key"])
 # --- Generate 4 specific MCQs for Chapter 1 only ---
 def generate_mcqs():
     prompt = """
-You are a literary expert creating a highly specific and challenging quiz on Chapter 1 of *The Jungle* by Upton Sinclair.
+You are a literary expert creating a challenging quiz on Chapter 1 of *The Jungle* by Upton Sinclair.
 
 Generate 4 multiple-choice questions. Each question must:
-- Be extremely specific to Chapter 1 (e.g., characters, setting, customs, clothing, events)
 - Reference only details from Chapter 1
 - Include 4 answer choices labeled A, B, C, and D
 - Indicate the correct answer at the end of each question using "Answer: X"
+
+Some questions can test advanced literary skills like juxtaposition and rhetorical strategies.
 
 Use this exact format:
 
