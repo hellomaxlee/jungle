@@ -1,11 +1,12 @@
 import streamlit as st
 import random
 from openai import OpenAI
+import re
 
 # Load OpenAI API key
 client = OpenAI(api_key=st.secrets["openai"]["api_key"])
 
-# --- Function to generate 4 extremely challenging MCQs ---
+# --- Function to generate MCQs ---
 def generate_mcqs(chapter_num):
     prompt = f"""
 You are a literary expert creating a difficult quiz on Chapter {chapter_num} of *The Jungle* by Upton Sinclair.
@@ -13,16 +14,18 @@ You are a literary expert creating a difficult quiz on Chapter {chapter_num} of 
 Generate 4 multiple-choice questions. Each question must:
 - Be extremely challenging and test deep understanding of Chapter {chapter_num}
 - Include 4 answer choices labeled A, B, C, and D
+- Clearly indicate the correct answer using the format "Answer: X"
 
-Format your response exactly like:
+Format exactly like:
 
-Q1: [question]
+Q1: [question text]
 A. ...
 B. ...
 C. ...
 D. ...
+Answer: X
 
-(Repeat for Q2 through Q4)
+(Repeat for Q2–Q4)
 """
     try:
         response = client.chat.completions.create(
@@ -35,36 +38,55 @@ D. ...
     except Exception as e:
         return f"Error: {e}"
 
-# --- Streamlit App ---
+# --- Function to split quiz and extract answers ---
+def parse_quiz(raw_text):
+    questions = []
+    answers = []
+    current_question = []
+
+    for line in raw_text.splitlines():
+        if line.startswith("Q") and current_question:
+            questions.append("\n".join(current_question))
+            current_question = [line]
+        elif line.startswith("Answer:"):
+            answers.append(line.split("Answer:")[1].strip())
+        else:
+            current_question.append(line)
+
+    if current_question:
+        questions.append("\n".join(current_question))
+
+    return questions, answers
+
+# --- Streamlit App UI ---
 st.title("📘 The Jungle Quiz Challenge")
 st.write("Test your knowledge of *The Jungle* by Upton Sinclair with 4 extremely challenging questions from a random chapter.")
 
 if st.button("🎲 Generate Random Quiz"):
     chapter_num = random.randint(1, 31)
     st.session_state.chapter = chapter_num
-    st.session_state.quiz = generate_mcqs(chapter_num)
+    raw_quiz = generate_mcqs(chapter_num)
+    questions, answers = parse_quiz(raw_quiz)
+    st.session_state.questions = questions
+    st.session_state.answers = answers
 
-# Show the quiz
-if "quiz" in st.session_state:
+# --- Display Questions ---
+if "questions" in st.session_state:
     st.subheader(f"📖 Chapter {st.session_state.chapter}")
-    st.code(st.session_state.quiz)
+    for i, q in enumerate(st.session_state.questions):
+        st.markdown(f"**Q{i+1}**:\n\n{q}", unsafe_allow_html=False)
 
-    # Capture user answers
+    # --- Capture User Answers ---
     user_answers = []
     for i in range(1, 5):
         ans = st.text_input(f"Your answer to Q{i} (A/B/C/D):", key=f"q{i}")
         user_answers.append(ans.strip().upper())
 
-    # Check answers
+    # --- Check User Answers ---
     if st.button("✅ Check My Answers"):
-        correct_lines = [line for line in st.session_state.quiz.splitlines() if line.startswith("Answer: ")]
-        if len(correct_lines) < 4:
-            st.error("Could not parse answers correctly. Try generating the quiz again.")
-        else:
-            for i, correct_line in enumerate(correct_lines):
-                correct = correct_line.split("Answer: ")[1].strip()
-                user = user_answers[i]
-                if user == correct:
-                    st.success(f"✅ Q{i+1} is correct!")
-                else:
-                    st.error(f"❌ Q{i+1} is incorrect. Correct answer: {correct}")
+        for i, (user, correct) in enumerate(zip(user_answers, st.session_state.answers)):
+            if user == correct:
+                st.success(f"✅ Q{i+1} is correct!")
+            else:
+                st.error(f"❌ Q{i+1} is incorrect. Correct answer: {correct}")
+
