@@ -12,7 +12,7 @@ def generate_mcqs_with_explanations():
 You are a literary expert creating a highly specific and challenging quiz on Chapter 1 of *The Jungle* by Upton Sinclair.
 
 Generate 4 multiple-choice questions. Each must:
-- Be extremely specific to Chapter 1 (e.g., people, places, customs, settings) OR talk about general themes and use of rhetorical devices
+- Be specific to Chapter 1 (e.g., people, places, customs, settings)
 - Include 4 answer choices (A–D)
 - Identify the correct answer using "Answer: X"
 - Provide a 3-4 sentence explanation after each correct answer
