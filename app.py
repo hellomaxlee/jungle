@@ -13,7 +13,6 @@ You are a literary expert creating a difficult quiz on Chapter {chapter_num} of 
 Generate 4 multiple-choice questions. Each question must:
 - Be extremely challenging and test deep understanding of Chapter {chapter_num}
 - Include 4 answer choices labeled A, B, C, and D
-- Clearly indicate the correct answer using the format "Answer: X"
 
 Format your response exactly like:
 
@@ -22,7 +21,6 @@ A. ...
 B. ...
 C. ...
 D. ...
-Answer: X
 
 (Repeat for Q2 through Q4)
 """
