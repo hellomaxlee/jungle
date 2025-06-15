@@ -75,7 +75,7 @@ def format_question(text):
 # --- Streamlit UI ---
 st.title("📘 The Jungle – Chapter 1 Quiz")
 
-if st.button("🎲 Generate Quiz"):
+if st.button("Generate Quiz"):
     st.session_state.chapter = 1
     raw_quiz = generate_mcqs_with_explanations()
     questions, answers, explanations = parse_quiz(raw_quiz)
@@ -96,7 +96,7 @@ if "questions" in st.session_state:
         user_answers.append(ans.strip().upper())
 
     # --- Check Answers + Show Explanations ---
-    if st.button("✅ Check My Answers"):
+    if st.button("Check My Answers"):
         score = 0
         for i, (user, correct, explain) in enumerate(zip(user_answers, st.session_state.answers, st.session_state.explanations)):
             if user == correct:
