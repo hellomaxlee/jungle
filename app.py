@@ -15,7 +15,7 @@ Generate 4 multiple-choice questions. Each must:
 - Be extremely specific to Chapter 1 (e.g., people, places, customs, settings) OR talk about general themes and use of rhetorical devices
 - Include 4 answer choices (A–D)
 - Identify the correct answer using "Answer: X"
-- Provide a short 1-2 sentence explanation after each correct answer
+- Provide a 3-4 sentence explanation after each correct answer
 
 Use this exact format:
 
@@ -107,4 +107,4 @@ if "questions" in st.session_state:
                 st.error(f"❌ Q{i+1} is incorrect. Correct answer: {correct}")
             st.markdown(f"**Explanation:** {explain}")
 
-        st.markdown(f"### 🏁 Total Score: **{score} Points**")
+        st.markdown(f"###Total Points: **{score}**")
