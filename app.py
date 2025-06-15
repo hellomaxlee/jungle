@@ -107,4 +107,4 @@ if "questions" in st.session_state:
                 st.error(f"❌ Q{i+1} is incorrect. Correct answer: {correct}")
             st.markdown(f"**Explanation:** {explain}")
 
-        st.markdown(f"###Total Points: **{score}**")
+        st.markdown(f"###Total Points: **{score}**###")
