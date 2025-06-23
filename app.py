@@ -109,6 +109,6 @@ if "questions" in st.session_state:
         if score == 4:
             st.markdown("🏆 **You earned 2 game points!**")
         elif score == 3:
-            st.markdown("✅ **You earned 1 game point!**")
+            st.markdown("✅ **You earned 1 game point.**")
         else:
-            st.markdown("❌ **You earned 0 game points. Try again later!**")
+            st.markdown("❌ **You earned 0 game points.**")
